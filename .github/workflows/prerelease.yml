@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '16'
@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Changelog
       id: github_release
-      uses: mikepenz/release-changelog-builder-action@v1
+      uses: mikepenz/release-changelog-builder-action@v2.6.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
