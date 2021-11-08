@@ -32,6 +32,7 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2.6.0
         with:
           commitMode: true
+          outputFile: 'CHANGELOG.md'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -40,6 +41,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           prerelease: true
-          body_path: ${{steps.github_release.outputs.changelog}}
+          body_path: 'CHANGELOG.md'
           files: |
             build/libs/*.jar
