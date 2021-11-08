@@ -2,11 +2,12 @@ package com.geowarin.blog
 
 import com.intellij.openapi.ui.DialogBuilder
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.ui.components.panels.RowGridLayout
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextField
 
-class ImageInsertSettingsPanel : JPanel() {
+internal class ImageInsertPanel : JPanel(RowGridLayout(1, 1, 10)) {
 
     internal val nameField = JTextField()
 
@@ -26,14 +27,13 @@ data class OkDialogResult(
 object CancelDialogResult : DialogResult()
 
 fun showInsertDialog(): DialogResult {
-    val contentPanel = ImageInsertSettingsPanel()
+    val contentPanel = ImageInsertPanel()
 
     val builder = DialogBuilder()
-    with(builder) {
-        setCenterPanel(contentPanel)
-        setTitle("Paste Image Settings")
-        setPreferredFocusComponent(contentPanel.nameField)
-    }
+        .centerPanel(contentPanel)
+        .title("Paste Image").apply {
+            setPreferredFocusComponent(contentPanel.nameField)
+        }
 
     return when (builder.show()) {
         DialogWrapper.OK_EXIT_CODE -> {
@@ -43,4 +43,13 @@ fun showInsertDialog(): DialogResult {
         else -> CancelDialogResult
     }
 
+}
+
+fun showErrorDialog() {
+    DialogBuilder()
+        .centerPanel(JLabel("Clipboard does not contain any image"))
+        .title("No Image in Clipboard")
+        .apply {
+            addOkAction()
+        }.show()
 }

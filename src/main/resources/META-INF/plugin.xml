@@ -1,11 +1,13 @@
 <idea-plugin>
     <id>com.geowarin.jb-blog-helper-plugin</id>
     <name>Hugo Blog Helper</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor url="https://geowarin.com">geowarin</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Hugo Blog Helper.<br>
+    <ul>
+        <li>Insert image from clipboard as {{< figure >}}
+    </ul>
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
