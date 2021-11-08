@@ -1,10 +1,8 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Prerelease
+name: build and release
 
-on:
-  push:
-    branches: [ main ]
+on: push
 
 jobs:
   build:
@@ -32,11 +30,14 @@ jobs:
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v2.6.0
+        with:
+          commitMode: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           prerelease: true
           body_path: ${{steps.github_release.outputs.changelog}}
