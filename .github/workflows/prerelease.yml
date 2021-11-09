@@ -1,4 +1,6 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+# TODO: https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+# TODO: https://github.com/softprops/action-gh-release/pull/179
 
 name: build and release
 
@@ -27,20 +29,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v2.6.0
-        with:
-          commitMode: true
-          outputFile: 'CHANGELOG.md'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: xt0rted/action-gh-release@testing
         if: startsWith(github.ref, 'refs/tags/')
         with:
           prerelease: true
-          body_path: 'CHANGELOG.md'
+          generate_release_notes: true
           files: |
             build/libs/*.jar
