@@ -24,14 +24,11 @@ class PasteImageHandler(private val myOriginalHandler: EditorActionHandler?) : E
     }
 
     public override fun doExecute(editor: Editor, caret: Caret?, dataContext: DataContext) {
-        if (editor is EditorEx && editor.virtualFile?.fileType?.name == "Markdown") {
-            val imageFromClipboard = getImageFromClipboard()
-            if (imageFromClipboard != null) {
-                assert(caret == null) { "Invocation of 'paste' operation for specific caret is not supported" }
-                val action = PasteImageFromClipboard()
-                val event = createAnEvent(action, dataContext)
-                action.actionPerformed(event)
-            }
+        if (editor is EditorEx && editor.virtualFile?.fileType?.name == "Markdown" && hasImageInClipboard()) {
+            assert(caret == null) { "Invocation of 'paste' operation for specific caret is not supported" }
+            val action = PasteImageFromClipboard()
+            val event = createAnEvent(action, dataContext)
+            action.actionPerformed(event)
         } else {
             myOriginalHandler?.execute(editor, null, dataContext)
         }

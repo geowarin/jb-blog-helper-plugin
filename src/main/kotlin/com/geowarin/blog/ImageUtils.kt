@@ -17,6 +17,11 @@ fun getImageFromClipboard(): Image? {
     }
 }
 
+fun hasImageInClipboard(): Boolean {
+    val transferable = Toolkit.getDefaultToolkit().systemClipboard.getContents(null)
+    return transferable.isDataFlavorSupported(DataFlavor.imageFlavor)
+}
+
 fun Image.toBufferedImage(): BufferedImage? {
     if (this is BufferedImage) {
         return this
