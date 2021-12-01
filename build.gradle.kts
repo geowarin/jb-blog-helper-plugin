@@ -12,12 +12,25 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    testImplementation(platform("org.junit:junit-bom:5.8.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+tasks.withType<org.jetbrains.intellij.tasks.RunIdeTask> {
+    autoReloadPlugins.set(true)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version.set("2021.2.3")
+    plugins.set(listOf("markdown"))
+    updateSinceUntilBuild.set(false)
 }
+
 tasks {
     patchPluginXml {
         changeNotes.set("""
