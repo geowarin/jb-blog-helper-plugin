@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.5.31"
-    id("org.jetbrains.intellij") version "1.2.1"
+    kotlin("jvm") version "1.9.22"
+    id("org.jetbrains.intellij") version "1.17.4"
 }
 
 group = "com.geowarin"
@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    testImplementation(platform("org.junit:junit-bom:5.8.1"))
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
@@ -26,7 +26,7 @@ tasks.withType<Test>().configureEach {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("2021.2.3")
+    version.set("2023.3.4")
     plugins.set(listOf("markdown"))
     updateSinceUntilBuild.set(false)
 }
