@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("java")
+    id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    id("org.jetbrains.intellij.platform") version "2.10.2"
 }
 
 group = "com.geowarin"
@@ -8,33 +9,43 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
+// Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
 dependencies {
-    implementation(kotlin("stdlib"))
-    testImplementation(platform("org.junit:junit-bom:5.10.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    intellijPlatform {
+        intellijIdea("2025.2.4")
+        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
+        bundledPlugin("org.intellij.plugins.markdown")
+    }
 }
 
-tasks.withType<org.jetbrains.intellij.tasks.RunIdeTask> {
-    autoReloadPlugins.set(true)
-}
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "252.25557"
+            untilBuild = provider { null }
+        }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-}
-
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    version.set("2023.3.4")
-    plugins.set(listOf("markdown"))
-    updateSinceUntilBuild.set(false)
+        changeNotes = """
+            Initial version
+        """.trimIndent()
+    }
 }
 
 tasks {
-    patchPluginXml {
-        changeNotes.set("""
-            Add change notes here.<br>
-            <em>most HTML tags may be used</em>        """.trimIndent())
+    // Set the JVM compatibility versions
+    withType<JavaCompile> {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
     }
 }

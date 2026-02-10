@@ -51,6 +51,8 @@ class PasteImageFromClipboard : AnAction() {
                     addToVcs(project, file)
                 }
             }
+
+            else -> {}
         }
     }
 
