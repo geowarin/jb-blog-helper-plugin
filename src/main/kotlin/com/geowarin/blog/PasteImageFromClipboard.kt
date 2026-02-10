@@ -17,15 +17,22 @@ import java.awt.image.BufferedImage
 import java.io.File
 
 
-private fun imageTemplate(path: File): String {
+private fun hugoImageTemplate(path: File): String {
     val relImagePath = path.toString().replace('\\', '/')
     return "{{< figure src=\"$relImagePath\" >}}"
+}
+
+private fun imageTemplate(path: File): String {
+    val relImagePath = path.toString().replace('\\', '/')
+    return "![]($relImagePath)"
 }
 
 class PasteImageFromClipboard : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(PlatformDataKeys.EDITOR) ?: return
         val project = editor.project ?: return
+
+        val isHugoProject = isHugoProject(project)
 
         val imageFromClipboard: Image? = getImageFromClipboard()
         if (imageFromClipboard == null) {
@@ -42,8 +49,10 @@ class PasteImageFromClipboard : AnAction() {
                 bufferedImage.saveAs(imageFile)
 
                 val relativePath = imageFile.relativeTo(currentDocument.parentFile)
+                val template = if (isHugoProject) hugoImageTemplate(relativePath) else imageTemplate(relativePath)
+                
                 runWriteCommandAction(project) {
-                    EditorModificationUtil.insertStringAtCaret(editor, imageTemplate(relativePath))
+                    EditorModificationUtil.insertStringAtCaret(editor, template)
                 }
 
                 // https://intellij-support.jetbrains.com/hc/en-us/community/posts/206144389-Create-virtual-file-from-file-path
